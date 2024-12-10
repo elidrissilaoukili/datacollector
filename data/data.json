@@ -3,7 +3,7 @@
         "title": "RO s1 mlaim TSP CPLEX ..",
         "source": "https://chatgpt.com/c/67503036-0350-800a-8cfa-d5b7c01ffc41",
         "qrimage": "./images/qrcode-ro.png",
-        "image_problem": ""
+        "image_problem": "undefined"
     },
     {
         "title": "exam infographics 2024",
@@ -13,8 +13,8 @@
     },
     {
         "title": "backgroundRemoval python",
-        "source": "",
+        "source": "undefined",
         "qrimage": "./images/qrcode-backgroundRemoval.png",
-        "image_problem": ""
+        "image_problem": "undefined"
     }
 ]
