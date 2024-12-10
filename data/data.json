@@ -7,7 +7,7 @@
     {
         "title": "Project B",
         "source": "https://github.com/example/project-b",
-        "qrimage": "https://example.com/images/project-b-qr.png"
+        "qrimage": "./images/qrcode-ro.png"
     },
     {
         "title": "Project C",
