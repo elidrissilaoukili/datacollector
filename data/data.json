@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Project A",
+        "source": "https://github.com/example/project-a",
+        "qrimage": "https://example.com/images/project-a-qr.png"
+    },
+    {
+        "name": "Project B",
+        "source": "https://github.com/example/project-b",
+        "qrimage": "https://example.com/images/project-b-qr.png"
+    },
+    {
+        "name": "Project C",
+        "source": "https://github.com/example/project-c",
+        "qrimage": "https://example.com/images/project-c-qr.png"
+    }
+]
