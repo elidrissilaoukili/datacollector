@@ -4,12 +4,51 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Default font */
+        }
+        
+        header {
+            background-color: #d6d6d6;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #1e90ff;
+        }
+
+        nav a img {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+
+    <style>
         * {
             box-sizing: border-box;
         }
 
         .maxwidth1400px {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: auto;
         }
 
@@ -45,32 +84,101 @@
         #myTable tr:hover {
             background-color: #f1f1f1;
         }
+
+        img {
+            max-width: 100px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: red;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
 
+    <header>
+        <nav>
+            <a href="https://github.com/elidrissilaoukili" target="_blank">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub">
+            </a>
+            <a href="https://www.linkedin.com/in/elidrissilaoukili" target="_blank">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg"
+                    alt="LinkedIn">
+            </a>
+        </nav>
+    </header>
+
+
+
     <div class="maxwidth1400px">
-        <h2>My data</h2>
+        <h2>My Data</h2>
 
         <input type="text" id="myInput" onkeyup="filterTable()" placeholder="Search for titles..."
             title="Type in a title">
 
         <table id="myTable">
             <tr class="header">
-                <th style="width:60%;">Title</th>
-                <th style="width:40%;">Source</th>
+                <th style="width:25%;">Title</th>
+                <th style="width:25%;">Source</th>
+                <th style="width:25%;">QR Code</th>
+                <th style="width:25%;">Problem Image</th>
             </tr>
             <!-- Rows will be dynamically added here -->
         </table>
     </div>
 
+    <!-- Modal for image preview -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
     <script type="module">
         const fetchTerminalProjectsData = async () => {
             try {
-                const response = await fetch('https://raw.githubusercontent.com/elidrissilaoukili/datacollector/main/data/data.json');
+                const response = await fetch(
+                    'https://raw.githubusercontent.com/elidrissilaoukili/datacollector/main/data/data.json'
+                );
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.json();
                 console.log(data);
@@ -87,33 +195,62 @@
                 // Create a new row
                 const row = document.createElement("tr");
 
-                // Create and populate the title cell
+                // Title Cell
                 const titleCell = document.createElement("td");
-                titleCell.textContent = item.title;
+                titleCell.textContent = item.title || "N/A"; // Handle missing data gracefully
                 row.appendChild(titleCell);
 
-                // Create and populate the source cell with a clickable link
+                // Source Cell with Link
                 const sourceCell = document.createElement("td");
                 const link = document.createElement("a");
-                link.href = item.source;
-                link.textContent = "View Source";
+                link.href = item.source || "#";
+                link.textContent = item.source ? "View Source" : "No Source";
                 link.target = "_blank";
                 sourceCell.appendChild(link);
                 row.appendChild(sourceCell);
+
+                // QR Code Image Cell
+                const qrCodeCell = document.createElement("td");
+                const qrCodeImage = document.createElement("img");
+                qrCodeImage.src = item.qrimage || "https://via.placeholder.com/200"; // Placeholder for missing images
+                qrCodeImage.onclick = () => showModal(qrCodeImage.src); // Add click event
+                qrCodeCell.appendChild(qrCodeImage);
+                row.appendChild(qrCodeCell);
+
+                // Problem Image Cell
+                const problemImageCell = document.createElement("td");
+                const problemImage = document.createElement("img");
+                problemImage.src = item.image_problem || "https://via.placeholder.com/200"; // Placeholder for missing images
+                problemImage.onclick = () => showModal(problemImage.src); // Add click event
+                problemImageCell.appendChild(problemImage);
+                row.appendChild(problemImageCell);
+
                 // Append the row to the table
                 table.appendChild(row);
-
-
-                // Create and populate the title cell
-                const imagecell = document.createElement("td");
-                const image = document.createElement("img");
-                image.src = item.qrimage;
-                image.style.width = '200px';
-                row.appendChild(image);
             });
         };
 
         fetchTerminalProjectsData();
+
+        // Modal functionality
+        const modal = document.getElementById("imageModal");
+        const modalImage = document.getElementById("modalImage");
+
+        const showModal = (src) => {
+            modalImage.src = src;
+            modal.style.display = "flex";
+        };
+
+        const closeModal = () => {
+            modal.style.display = "none";
+        };
+
+        // Close modal when clicking outside the image
+        window.onclick = (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
     </script>
 
     <script>
