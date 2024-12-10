@@ -99,7 +99,7 @@
     <script type="module">
         export const fetchTerminalProjectsData = async () => {
             try {
-                const response = await fetch('https://raw.githubusercontent.com/elidrissilaoukili/portfolio-data-repo/main/terminal_projects.json');
+                const response = await fetch('https://raw.githubusercontent.com/elidrissilaoukili/datacollector/refs/heads/main/data/data.json');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
