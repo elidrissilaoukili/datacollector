@@ -1,18 +1,15 @@
 [
     {
-        "title": "Project A",
-        "source": "https://github.com/example/project-a",
-        "qrimage": "https://example.com/images/project-a-qr.png"
+        "title": "RO s1 mlaim TSP CPLEX ..",
+        "source": "https://chatgpt.com/c/67503036-0350-800a-8cfa-d5b7c01ffc41",
+        "qrimage": "./images/qrcode-ro.png",
+        "image_problem": ""
     },
     {
-        "title": "Project B",
-        "source": "https://github.com/example/project-b",
-        "qrimage": "./images/qrcode-ro.png"
-    },
-    {
-        "title": "Project C",
-        "source": "https://github.com/example/project-c",
-        "qrimage": "https://example.com/images/project-c-qr.png"
+        "title": "exam infographics 2024",
+        "source": "https://chatgpt.com/c/6757fc35-7034-800a-b280-c5d1663da3c0",
+        "qrimage": "./images/qrcode-exam-infographics2024.png",
+        "image_problem": "./images/exam-infographics2024.png"
     }
 ]
 
