@@ -10,6 +10,14 @@
         "source": "https://chatgpt.com/c/6757fc35-7034-800a-b280-c5d1663da3c0",
         "qrimage": "./images/qrcode-exam-infographics2024.png",
         "image_problem": "./images/exam-infographics2024.png"
-    }
+    },
+    {
+        "title": "backgroundRemoval python",
+        "source": "",
+        "qrimage": "./images/qrcode-backgroundRemoval.png",
+        "image_problem": ""
+    },
+
+    
 ]
 
