@@ -14,7 +14,7 @@
         }
 
         #myInput {
-            background-image: url('/css/searchicon.png');
+            background-image: url('https://www.w3schools.com/css/searchicon.png');
             background-position: 10px 10px;
             background-repeat: no-repeat;
             width: 100%;
@@ -53,84 +53,72 @@
     <div class="maxwidth1400px">
         <h2>My data</h2>
 
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+        <input type="text" id="myInput" onkeyup="filterTable()" placeholder="Search for titles..." title="Type in a title">
 
         <table id="myTable">
             <tr class="header">
-                <th style="width:60%;">Name</th>
-                <th style="width:40%;">Country</th>
+                <th style="width:60%;">Title</th>
+                <th style="width:40%;">Source</th>
             </tr>
-            <tr>
-                <td>Alfreds Futterkiste</td>
-                <td>Germany</td>
-            </tr>
-            <tr>
-                <td>Berglunds snabbkop</td>
-                <td>Sweden</td>
-            </tr>
-            <tr>
-                <td>Island Trading</td>
-                <td>UK</td>
-            </tr>
-            <tr>
-                <td>Koniglich Essen</td>
-                <td>Germany</td>
-            </tr>
-            <tr>
-                <td>Laughing Bacchus Winecellars</td>
-                <td>Canada</td>
-            </tr>
-            <tr>
-                <td>Magazzini Alimentari Riuniti</td>
-                <td>Italy</td>
-            </tr>
-            <tr>
-                <td>North/South</td>
-                <td>UK</td>
-            </tr>
-            <tr>
-                <td>Paris specialites</td>
-                <td>France</td>
-            </tr>
+            <!-- Rows will be dynamically added here -->
         </table>
     </div>
 
-
     <script type="module">
-        export const fetchTerminalProjectsData = async () => {
+        const fetchTerminalProjectsData = async () => {
             try {
-                const response = await fetch('https://raw.githubusercontent.com/elidrissilaoukili/datacollector/refs/heads/main/data/data.json');
+                const response = await fetch('https://raw.githubusercontent.com/elidrissilaoukili/datacollector/main/data/data.json');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
-                console.log(data); // Logs the fetched data
-                // return data; // Uncomment if you need to return the data
+                populateTable(data); // Pass fetched data to the table population function
             } catch (error) {
-                console.error('Error fetching portfolio data:', error);
-                return null;
+                console.error('Error fetching data:', error);
             }
+        };
+
+        const populateTable = (data) => {
+            const table = document.getElementById("myTable");
+
+            data.forEach(item => {
+                // Create a new row
+                const row = document.createElement("tr");
+
+                // Create and populate the title cell
+                const titleCell = document.createElement("td");
+                titleCell.textContent = item.title;
+                row.appendChild(titleCell);
+
+                // Create and populate the source cell with a clickable link
+                const sourceCell = document.createElement("td");
+                const link = document.createElement("a");
+                link.href = item.source;
+                link.textContent = "View Source";
+                link.target = "_blank";
+                sourceCell.appendChild(link);
+                row.appendChild(sourceCell);
+
+                // Append the row to the table
+                table.appendChild(row);
+            });
         };
 
         fetchTerminalProjectsData();
     </script>
 
     <script>
-        function myFunction() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
+        function filterTable() {
+            const input = document.getElementById("myInput");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("myTable");
+            const tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) { // Start at 1 to skip the header row
+                const td = tr[i].getElementsByTagName("td")[0];
                 if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
+                    const txtValue = td.textContent || td.innerText;
+                    tr[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
                 }
             }
         }
